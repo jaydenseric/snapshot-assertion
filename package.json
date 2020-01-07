@@ -1,0 +1,54 @@
+{
+  "name": "snapshot-assertion",
+  "version": "1.0.0",
+  "description": "Asserts a string matches a snapshot saved in a file. An environment variable can be used to save rather than assert snapshots.",
+  "license": "MIT",
+  "author": {
+    "name": "Jayden Seric",
+    "email": "me@jaydenseric.com",
+    "url": "https://jaydenseric.com"
+  },
+  "repository": "github:jaydenseric/snapshot-assertion",
+  "homepage": "https://github.com/jaydenseric/snapshot-assertion#readme",
+  "bugs": "https://github.com/jaydenseric/snapshot-assertion/issues",
+  "funding": "https://github.com/sponsors/jaydenseric",
+  "keywords": [
+    "snapshot",
+    "assert",
+    "assertion",
+    "test",
+    "testing"
+  ],
+  "files": [
+    "index.js"
+  ],
+  "main": "index.js",
+  "engines": {
+    "node": ">=10"
+  },
+  "devDependencies": {
+    "coverage-node": "^2.0.2",
+    "disposable-directory": "^1.0.0",
+    "eslint": "^6.8.0",
+    "eslint-config-env": "^13.0.2",
+    "eslint-config-prettier": "^6.9.0",
+    "eslint-plugin-import": "^2.19.1",
+    "eslint-plugin-jsdoc": "^20.0.2",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "hard-rejection": "^2.1.0",
+    "jsdoc-md": "^5.0.0",
+    "prettier": "^1.19.1",
+    "test-director": "^3.0.0"
+  },
+  "scripts": {
+    "prepare": "npm run prepare:jsdoc && npm run prepare:prettier",
+    "prepare:jsdoc": "jsdoc-md",
+    "prepare:prettier": "prettier readme.md --write",
+    "test": "npm run test:eslint && npm run test:prettier && npm run test:api",
+    "test:eslint": "eslint .",
+    "test:prettier": "prettier '**/*.{json,yml,md}' -l",
+    "test:api": "coverage-node -r hard-rejection/register test",
+    "prepublishOnly": "npm test"
+  }
+}
