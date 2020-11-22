@@ -1,35 +1,35 @@
-'use strict'
+'use strict';
 
-const { doesNotReject, rejects, strictEqual } = require('assert')
-const { execFile } = require('child_process')
-const fs = require('fs')
-const { join } = require('path')
-const { promisify } = require('util')
-const { disposableDirectory } = require('disposable-directory')
-const { TestDirector } = require('test-director')
-const snapshot = require('.')
+const { doesNotReject, rejects, strictEqual } = require('assert');
+const { execFile } = require('child_process');
+const fs = require('fs');
+const { join } = require('path');
+const { promisify } = require('util');
+const { disposableDirectory } = require('disposable-directory');
+const { TestDirector } = require('test-director');
+const snapshot = require('.');
 
-const execFilePromise = promisify(execFile)
+const execFilePromise = promisify(execFile);
 
-const tests = new TestDirector()
+const tests = new TestDirector();
 
 tests.add('`snapshot` with default assertion.', async () => {
   await disposableDirectory(async (tempDirPath) => {
-    const snapshotPath = join(tempDirPath, 'snapshot.txt')
-    await fs.promises.writeFile(snapshotPath, 'a')
-    await doesNotReject(() => snapshot('a', snapshotPath))
+    const snapshotPath = join(tempDirPath, 'snapshot.txt');
+    await fs.promises.writeFile(snapshotPath, 'a');
+    await doesNotReject(() => snapshot('a', snapshotPath));
     await rejects(() => snapshot('b', snapshotPath), {
       code: 'ERR_ASSERTION',
-    })
-  })
-})
+    });
+  });
+});
 
 tests.add('`snapshot` with custom assertion.', async () => {
   await disposableDirectory(async (tempDirPath) => {
-    const snapshotPath = join(tempDirPath, 'snapshot.json')
-    await fs.promises.writeFile(snapshotPath, 'a')
+    const snapshotPath = join(tempDirPath, 'snapshot.json');
+    await fs.promises.writeFile(snapshotPath, 'a');
 
-    const errorMessage = 'Different values.'
+    const errorMessage = 'Different values.';
 
     /**
      * Asserts one value is another.
@@ -40,51 +40,51 @@ tests.add('`snapshot` with custom assertion.', async () => {
      * @ignore
      */
     function assertIs(actual, expected) {
-      if (!Object.is(actual, expected)) throw new Error(errorMessage)
+      if (!Object.is(actual, expected)) throw new Error(errorMessage);
     }
 
-    await doesNotReject(() => snapshot('a', snapshotPath, assertIs))
+    await doesNotReject(() => snapshot('a', snapshotPath, assertIs));
     await rejects(() => snapshot('b', snapshotPath, assertIs), {
       name: 'Error',
       message: errorMessage,
-    })
-  })
-})
+    });
+  });
+});
 
 tests.add('`snapshot` with invalid snapshot file path.', async () => {
-  await rejects(() => snapshot('a', false), { code: 'ERR_INVALID_ARG_TYPE' })
-})
+  await rejects(() => snapshot('a', false), { code: 'ERR_INVALID_ARG_TYPE' });
+});
 
 tests.add('`snapshot` with missing snapshot file.', async () => {
   await disposableDirectory(async (tempDirPath) => {
-    const snapshotPath = join(tempDirPath, 'snapshot.txt')
+    const snapshotPath = join(tempDirPath, 'snapshot.txt');
     await rejects(() => snapshot('a', snapshotPath), {
       name: 'Error',
       message: `Use the environment variable \`SAVE_SNAPSHOTS=1\` to create missing snapshot \`${snapshotPath}\`.`,
-    })
-  })
-})
+    });
+  });
+});
 
 tests.add(
   '`snapshot` with environment variable `SAVE_SNAPSHOTS=1`.',
   async () => {
     await disposableDirectory(async (tempDirPath) => {
-      const snapshotPath = join(tempDirPath, 'snapshot.txt')
-      const testPath = join(tempDirPath, 'test.js')
+      const snapshotPath = join(tempDirPath, 'snapshot.txt');
+      const testPath = join(tempDirPath, 'test.js');
 
-      await fs.promises.writeFile(snapshotPath, 'a')
+      await fs.promises.writeFile(snapshotPath, 'a');
       await fs.promises.writeFile(
         testPath,
         `require('${join(__dirname, 'index.js')}')('b', '${snapshotPath}')`
-      )
+      );
 
       await execFilePromise('node', [testPath], {
         env: { ...process.env, SAVE_SNAPSHOTS: '1' },
-      })
+      });
 
-      strictEqual(await fs.promises.readFile(snapshotPath, 'utf8'), 'b')
-    })
+      strictEqual(await fs.promises.readFile(snapshotPath, 'utf8'), 'b');
+    });
   }
-)
+);
 
-tests.run()
+tests.run();

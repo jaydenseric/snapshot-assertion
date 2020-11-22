@@ -35,16 +35,16 @@ Asserts a string matches a snapshot saved in a file. A truthy `SAVE_SNAPSHOTS` e
 _A snapshot assertion in a [`test-director`](https://npm.im/test-director) test._
 
 > ```js
-> const fetch = require('node-fetch')
-> const snapshot = require('snapshot-assertion')
-> const { TestDirector } = require('test-director')
+> const fetch = require('node-fetch');
+> const snapshot = require('snapshot-assertion');
+> const { TestDirector } = require('test-director');
 >
-> const tests = new TestDirector()
+> const tests = new TestDirector();
 >
 > tests.add('Get a todo.', async () => {
->   const response = await fetch('http://jsonplaceholder.typicode.com/todos/1')
->   await snapshot(await response.json(), 'snapshots/todo.json')
-> })
+>   const response = await fetch('http://jsonplaceholder.typicode.com/todos/1');
+>   await snapshot(await response.json(), 'snapshots/todo.json');
+> });
 >
-> tests.run()
+> tests.run();
 > ```
