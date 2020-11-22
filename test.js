@@ -14,18 +14,18 @@ const execFilePromise = promisify(execFile)
 const tests = new TestDirector()
 
 tests.add('`snapshot` with default assertion.', async () => {
-  await disposableDirectory(async tempDirPath => {
+  await disposableDirectory(async (tempDirPath) => {
     const snapshotPath = join(tempDirPath, 'snapshot.txt')
     await fs.promises.writeFile(snapshotPath, 'a')
     await doesNotReject(() => snapshot('a', snapshotPath))
     await rejects(() => snapshot('b', snapshotPath), {
-      code: 'ERR_ASSERTION'
+      code: 'ERR_ASSERTION',
     })
   })
 })
 
 tests.add('`snapshot` with custom assertion.', async () => {
-  await disposableDirectory(async tempDirPath => {
+  await disposableDirectory(async (tempDirPath) => {
     const snapshotPath = join(tempDirPath, 'snapshot.json')
     await fs.promises.writeFile(snapshotPath, 'a')
 
@@ -46,7 +46,7 @@ tests.add('`snapshot` with custom assertion.', async () => {
     await doesNotReject(() => snapshot('a', snapshotPath, assertIs))
     await rejects(() => snapshot('b', snapshotPath, assertIs), {
       name: 'Error',
-      message: errorMessage
+      message: errorMessage,
     })
   })
 })
@@ -56,11 +56,11 @@ tests.add('`snapshot` with invalid snapshot file path.', async () => {
 })
 
 tests.add('`snapshot` with missing snapshot file.', async () => {
-  await disposableDirectory(async tempDirPath => {
+  await disposableDirectory(async (tempDirPath) => {
     const snapshotPath = join(tempDirPath, 'snapshot.txt')
     await rejects(() => snapshot('a', snapshotPath), {
       name: 'Error',
-      message: `Use the environment variable \`SAVE_SNAPSHOTS=1\` to create missing snapshot \`${snapshotPath}\`.`
+      message: `Use the environment variable \`SAVE_SNAPSHOTS=1\` to create missing snapshot \`${snapshotPath}\`.`,
     })
   })
 })
@@ -68,7 +68,7 @@ tests.add('`snapshot` with missing snapshot file.', async () => {
 tests.add(
   '`snapshot` with environment variable `SAVE_SNAPSHOTS=1`.',
   async () => {
-    await disposableDirectory(async tempDirPath => {
+    await disposableDirectory(async (tempDirPath) => {
       const snapshotPath = join(tempDirPath, 'snapshot.txt')
       const testPath = join(tempDirPath, 'test.js')
 
@@ -79,7 +79,7 @@ tests.add(
       )
 
       await execFilePromise('node', [testPath], {
-        env: { ...process.env, SAVE_SNAPSHOTS: '1' }
+        env: { ...process.env, SAVE_SNAPSHOTS: '1' },
       })
 
       strictEqual(await fs.promises.readFile(snapshotPath, 'utf8'), 'b')
