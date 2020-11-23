@@ -29,7 +29,7 @@ const fs = require('fs');
  * const tests = new TestDirector();
  *
  * tests.add('Get a todo.', async () => {
- *   const response = await fetch('http://jsonplaceholder.typicode.com/todos/1');
+ *   const response = await fetch('https://jsonplaceholder.typicode.com/todos/1');
  *   await snapshot(await response.json(), 'snapshots/todo.json');
  * });
  *
