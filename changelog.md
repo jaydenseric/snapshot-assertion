@@ -9,6 +9,9 @@
 
 ### Patch
 
+- Ensure GitHub Actions CI runs on pull request.
+- Also run GitHub Actions CI with Node.js v14 and v15, and not v13.
+- Simplified the GitHub Actions CI config with the [`npm install-test`](https://docs.npmjs.com/cli/v7/commands/npm-install-test) command.
 - Improved the package `prepare:prettier` and `test:prettier` scripts.
 - Configured Prettier option `semi` to the default, `true`.
 - Removed a now redundant ESLint rule config.
