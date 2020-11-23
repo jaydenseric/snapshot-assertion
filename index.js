@@ -12,6 +12,14 @@ const fs = require('fs');
  * @param {string} snapshotFilePath Snapshot file path. Be sure any directories in the path already exist. It’s a good idea to use a filename extension suited to the data, e.g. `.json`, `.yml`, `.xml`, `.html`, `.md` or `.txt`.
  * @param {Function} [assertion] Assertion that receives actual and expected values and throws an error if they don’t match. Defaults to the Node.js [`strictEqual`](https://nodejs.org/api/assert.html#assert_assert_strictequal_actual_expected_message) assertion.
  * @returns {Promise<void>} Resolves once the snapshot has been saved or asserted.
+ * @example <caption>How to `import`.</caption>
+ * ```js
+ * import snapshot from 'snapshot-assertion';
+ * ```
+ * @example <caption>How to `require`.</caption>
+ * ```js
+ * const snapshot = require('snapshot-assertion');
+ * ```
  * @example <caption>A snapshot assertion in a [`test-director`](https://npm.im/test-director) test.</caption>
  * ```js
  * const fetch = require('node-fetch');

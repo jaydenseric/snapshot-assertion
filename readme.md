@@ -32,6 +32,18 @@ Asserts a string matches a snapshot saved in a file. A truthy `SAVE_SNAPSHOTS` e
 
 #### Examples
 
+_How to `import`._
+
+> ```js
+> import snapshot from 'snapshot-assertion';
+> ```
+
+_How to `require`._
+
+> ```js
+> const snapshot = require('snapshot-assertion');
+> ```
+
 _A snapshot assertion in a [`test-director`](https://npm.im/test-director) test._
 
 > ```js
