@@ -1,6 +1,6 @@
 # snapshot-assertion changelog
 
-## Next
+## 2.0.0
 
 ### Major
 
