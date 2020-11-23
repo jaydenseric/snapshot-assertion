@@ -11,6 +11,7 @@
 
 - Improved the package `prepare:prettier` and `test:prettier` scripts.
 - Configured Prettier option `semi` to the default, `true`.
+- Use HTTPS in an `.editorconfig` comment URL.
 
 ## 1.0.0
 
