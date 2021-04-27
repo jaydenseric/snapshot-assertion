@@ -17,38 +17,40 @@
     "assert",
     "assertion",
     "test",
-    "testing"
+    "testing",
+    "esm",
+    "mjs"
   ],
   "files": [
-    "index.js"
+    "index.mjs"
   ],
   "sideEffects": false,
-  "main": "index.js",
+  "main": "./index.mjs",
   "engines": {
     "node": "^12.20 || >= 14.13"
   },
   "devDependencies": {
-    "coverage-node": "^3.0.0",
+    "coverage-node": "^5.0.0",
     "disposable-directory": "^3.0.0",
-    "eslint": "^7.14.0",
-    "eslint-config-env": "^15.0.1",
-    "eslint-config-prettier": "^6.15.0",
+    "eslint": "^7.25.0",
+    "eslint-config-env": "^19.0.1",
+    "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-jsdoc": "^30.7.8",
+    "eslint-plugin-jsdoc": "^32.3.2",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-prettier": "^3.1.4",
-    "jsdoc-md": "^7.0.0",
-    "prettier": "^2.2.0",
-    "test-director": "^4.0.1"
+    "eslint-plugin-prettier": "^3.4.0",
+    "jsdoc-md": "^10.0.1",
+    "prettier": "^2.2.1",
+    "test-director": "^6.0.0"
   },
   "scripts": {
     "prepare": "npm run prepare:jsdoc && npm run prepare:prettier",
     "prepare:jsdoc": "jsdoc-md",
     "prepare:prettier": "prettier --write readme.md",
     "test": "npm run test:eslint && npm run test:prettier && npm run test:api",
-    "test:eslint": "eslint .",
+    "test:eslint": "eslint --ext mjs,js .",
     "test:prettier": "prettier -c .",
-    "test:api": "coverage-node test",
+    "test:api": "coverage-node test.mjs",
     "prepublishOnly": "npm test"
   }
 }

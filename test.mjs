@@ -1,13 +1,12 @@
-'use strict';
-
-const { doesNotReject, rejects, strictEqual } = require('assert');
-const { execFile } = require('child_process');
-const fs = require('fs');
-const { join } = require('path');
-const { promisify } = require('util');
-const { disposableDirectory } = require('disposable-directory');
-const { TestDirector } = require('test-director');
-const snapshot = require('.');
+import { doesNotReject, rejects, strictEqual } from 'assert';
+import { execFile } from 'child_process';
+import fs from 'fs';
+import { join } from 'path';
+import { fileURLToPath } from 'url';
+import { promisify } from 'util';
+import { disposableDirectory } from 'disposable-directory';
+import TestDirector from 'test-director';
+import snapshot from './index.mjs';
 
 const execFilePromise = promisify(execFile);
 
@@ -70,12 +69,18 @@ tests.add(
   async () => {
     await disposableDirectory(async (tempDirPath) => {
       const snapshotPath = join(tempDirPath, 'snapshot.txt');
-      const testPath = join(tempDirPath, 'test.js');
+      const testPath = join(tempDirPath, 'test.mjs');
+      const snapshotAssertionPath = fileURLToPath(
+        new URL('./index.mjs', import.meta.url)
+      );
 
       await fs.promises.writeFile(snapshotPath, 'a');
       await fs.promises.writeFile(
         testPath,
-        `require('${join(__dirname, 'index.js')}')('b', '${snapshotPath}')`
+        `import snapshot from '${snapshotAssertionPath}';
+
+snapshot('b', '${snapshotPath}');
+`
       );
 
       await execFilePromise('node', [testPath], {

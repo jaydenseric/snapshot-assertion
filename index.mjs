@@ -1,6 +1,5 @@
-'use strict';
-
-const fs = require('fs');
+import { strictEqual } from 'assert';
+import fs from 'fs';
 
 /**
  * Asserts a string matches a snapshot saved in a file. A truthy
@@ -16,15 +15,11 @@ const fs = require('fs');
  * ```js
  * import snapshot from 'snapshot-assertion';
  * ```
- * @example <caption>How to `require`.</caption>
- * ```js
- * const snapshot = require('snapshot-assertion');
- * ```
  * @example <caption>A snapshot assertion in a [`test-director`](https://npm.im/test-director) test.</caption>
  * ```js
- * const fetch = require('node-fetch');
- * const snapshot = require('snapshot-assertion');
- * const { TestDirector } = require('test-director');
+ * import fetch from 'node-fetch';
+ * import snapshot from 'snapshot-assertion';
+ * import TestDirector from 'test-director';
  *
  * const tests = new TestDirector();
  *
@@ -36,10 +31,10 @@ const fs = require('fs');
  * tests.run();
  * ```
  */
-module.exports = async function snapshot(
+export default async function snapshot(
   actualValue,
   snapshotFilePath,
-  assertion = require('assert').strictEqual
+  assertion = strictEqual
 ) {
   if (process.env.SAVE_SNAPSHOTS)
     await fs.promises.writeFile(snapshotFilePath, actualValue);
@@ -56,4 +51,4 @@ module.exports = async function snapshot(
 
     assertion(actualValue, expectedValue);
   }
-};
+}
