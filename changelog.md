@@ -6,6 +6,10 @@
 
 - Updated Node.js support to `^12.20 || >= 14.13`.
 
+### Minor
+
+- Added package `sideEffects` field.
+
 ### Patch
 
 - Stop using [`hard-rejection`](https://npm.im/hard-rejection) to detect unhandled `Promise` rejections in tests, as Node.js v15+ does this natively.

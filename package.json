@@ -22,6 +22,7 @@
   "files": [
     "index.js"
   ],
+  "sideEffects": false,
   "main": "index.js",
   "engines": {
     "node": "^12.20 || >= 14.13"
