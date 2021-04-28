@@ -74,14 +74,16 @@ tests.add(
         new URL('./index.mjs', import.meta.url)
       );
 
-      await fs.promises.writeFile(snapshotPath, 'a');
-      await fs.promises.writeFile(
-        testPath,
-        `import snapshot from '${snapshotAssertionPath}';
+      await Promise.all([
+        fs.promises.writeFile(snapshotPath, 'a'),
+        fs.promises.writeFile(
+          testPath,
+          `import snapshot from '${snapshotAssertionPath}';
 
 snapshot('b', '${snapshotPath}');
 `
-      );
+        ),
+      ]);
 
       await execFilePromise('node', [testPath], {
         env: { ...process.env, SAVE_SNAPSHOTS: '1' },
