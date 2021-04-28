@@ -6,7 +6,7 @@ Asserts a string matches a snapshot saved in a file. An environment variable can
 
 ## Setup
 
-To install from [npm](https://npmjs.com) run:
+To install with [npm](https://npmjs.com/get-npm), run:
 
 ```sh
 npm install snapshot-assertion --save-dev

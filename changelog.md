@@ -24,6 +24,7 @@
   - Don’t specify the `CI` environment variable as it’s set by default.
 - Use `Promise.all` for faster tests.
 - Tweak whitespace formatting.
+- Readme tweaks.
 
 ## 2.0.0
 
