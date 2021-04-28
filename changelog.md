@@ -22,6 +22,7 @@
   - Updated `actions/setup-node` to v2.
   - Don’t specify the `CI` environment variable as it’s set by default.
 - Use `Promise.all` for faster tests.
+- Tweak whitespace formatting.
 
 ## 2.0.0
 
