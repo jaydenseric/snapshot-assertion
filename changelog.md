@@ -16,6 +16,7 @@
 ### Patch
 
 - Stop using [`hard-rejection`](https://npm.im/hard-rejection) to detect unhandled `Promise` rejections in tests, as Node.js v15+ does this natively.
+- Simplified the package scripts now that [`jsdoc-md`](https://npm.im/jsdoc-md) v10 automatically generates a Prettier formatted readme.
 - Updated GitHub Actions CI config:
   - Also run tests with Node.js v16.
   - Updated `actions/checkout` to v2.
