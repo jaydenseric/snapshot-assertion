@@ -1,6 +1,6 @@
 {
   "name": "snapshot-assertion",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Asserts a string matches a snapshot saved in a file. An environment variable can be used to save rather than assert snapshots.",
   "license": "MIT",
   "author": {
