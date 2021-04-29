@@ -1,5 +1,11 @@
 # snapshot-assertion changelog
 
+## Next
+
+### Patch
+
+- Updated dev dependencies.
+
 ## 3.0.0
 
 ### Major
