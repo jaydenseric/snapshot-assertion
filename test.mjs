@@ -4,7 +4,7 @@ import fs from 'fs';
 import { join } from 'path';
 import { fileURLToPath } from 'url';
 import { promisify } from 'util';
-import { disposableDirectory } from 'disposable-directory';
+import disposableDirectory from 'disposable-directory';
 import TestDirector from 'test-director';
 import snapshot from './index.mjs';
 
