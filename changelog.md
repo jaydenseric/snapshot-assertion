@@ -10,7 +10,8 @@
 
 ### Patch
 
-- Added a package `test:jsdoc` script that checks the readme API docs are up to date with the source JSDoc.
+- Simplified package scripts.
+- Added a package `docs-check` script that checks the readme API docs are up to date with the source JSDoc.
 - Also run GitHub Actions CI with Node.js v17, and drop v15.
 
 ## 3.0.0
