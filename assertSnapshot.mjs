@@ -8,7 +8,7 @@ import fs from "fs";
  * @kind function
  * @name assertSnapshot
  * @param {string} actualValue Actual value to assert matches the snapshot expected value.
- * @param {string} snapshotFilePath Snapshot file path. Be sure any directories in the path already exist. It’s a good idea to use a filename extension suited to the data, e.g. `.json`, `.yml`, `.xml`, `.html`, `.md` or `.txt`.
+ * @param {string | URL} snapshotFile Snapshot file path or URL. Be sure any directories in the path already exist. It’s a good idea to use a filename extension suited to the data, e.g. `.json`, `.yml`, `.xml`, `.html`, `.md`, or `.txt`.
  * @param {Function} [assertion] Assertion that receives actual and expected values and throws an error if they don’t match. Defaults to the Node.js [`strictEqual`](https://nodejs.org/api/assert.html#assert_assert_strictequal_actual_expected_message) assertion.
  * @returns {Promise<void>} Resolves once the snapshot has been saved or asserted.
  * @example <caption>Ways to import.</caption>
@@ -37,18 +37,29 @@ import fs from "fs";
  */
 export default async function assertSnapshot(
   actualValue,
-  snapshotFilePath,
+  snapshotFile,
   assertion = strictEqual
 ) {
+  if (typeof actualValue !== "string")
+    throw new TypeError("Argument 1 `actualValue` must be a string.");
+
+  if (typeof snapshotFile !== "string" && !(snapshotFile instanceof URL))
+    throw new TypeError(
+      "Argument 2 `snapshotFile` must be a string or `URL` instance."
+    );
+
+  if (typeof assertion !== "function")
+    throw new TypeError("Argument 3 `assertion` must be a function.");
+
   if (process.env.SAVE_SNAPSHOTS)
-    await fs.promises.writeFile(snapshotFilePath, actualValue);
+    await fs.promises.writeFile(snapshotFile, actualValue);
   else {
     try {
-      var expectedValue = await fs.promises.readFile(snapshotFilePath, "utf8");
+      var expectedValue = await fs.promises.readFile(snapshotFile, "utf8");
     } catch (error) {
       throw typeof error === "object" && error && error.code === "ENOENT"
         ? new Error(
-            `Use the environment variable \`SAVE_SNAPSHOTS=1\` to create missing snapshot \`${snapshotFilePath}\`.`
+            `Use the environment variable \`SAVE_SNAPSHOTS=1\` to create missing snapshot \`${snapshotFile}\`.`
           )
         : error;
     }

@@ -2,7 +2,7 @@ import { doesNotReject, rejects, strictEqual } from "assert";
 import { execFile } from "child_process";
 import fs from "fs";
 import { join } from "path";
-import { fileURLToPath } from "url";
+import { fileURLToPath, pathToFileURL } from "url";
 import { promisify } from "util";
 import disposableDirectory from "disposable-directory";
 import TestDirector from "test-director";
@@ -11,81 +11,94 @@ import assertSnapshot from "./assertSnapshot.mjs";
 const execFilePromise = promisify(execFile);
 const tests = new TestDirector();
 
-tests.add("`assertSnapshot` with default assertion.", async () => {
-  await disposableDirectory(async (tempDirPath) => {
-    const snapshotPath = join(tempDirPath, "snapshot.txt");
-
-    await fs.promises.writeFile(snapshotPath, "a");
-
-    await doesNotReject(() => assertSnapshot("a", snapshotPath));
-    await rejects(() => assertSnapshot("b", snapshotPath), {
-      code: "ERR_ASSERTION",
-    });
-  });
-});
-
-tests.add("`assertSnapshot` with custom assertion.", async () => {
-  await disposableDirectory(async (tempDirPath) => {
-    const snapshotPath = join(tempDirPath, "snapshot.json");
-
-    await fs.promises.writeFile(snapshotPath, "a");
-
-    const errorMessage = "Different values.";
-
-    /**
-     * Asserts one value is another.
-     * @kind function
-     * @name assertIs
-     * @param {*} actual Actual value.
-     * @param {*} expected Expected value.
-     * @ignore
-     */
-    function assertIs(actual, expected) {
-      if (!Object.is(actual, expected)) throw new Error(errorMessage);
-    }
-
-    await doesNotReject(() => assertSnapshot("a", snapshotPath, assertIs));
-    await rejects(() => assertSnapshot("b", snapshotPath, assertIs), {
-      name: "Error",
-      message: errorMessage,
-    });
-  });
-});
-
-tests.add("`assertSnapshot` with invalid snapshot file path.", async () => {
-  await rejects(() => assertSnapshot("a", false), {
-    code: "ERR_INVALID_ARG_TYPE",
-  });
-});
-
-tests.add("`assertSnapshot` with missing snapshot file.", async () => {
-  await disposableDirectory(async (tempDirPath) => {
-    const snapshotPath = join(tempDirPath, "snapshot.txt");
-
-    await rejects(() => assertSnapshot("a", snapshotPath), {
-      name: "Error",
-      message: `Use the environment variable \`SAVE_SNAPSHOTS=1\` to create missing snapshot \`${snapshotPath}\`.`,
-    });
-  });
-});
+tests.add(
+  "`assertSnapshot` with argument 1 `actualValue` not a string.",
+  async () => {
+    await rejects(
+      assertSnapshot(true),
+      new TypeError("Argument 1 `actualValue` must be a string.")
+    );
+  }
+);
 
 tests.add(
-  "`assertSnapshot` with environment variable `SAVE_SNAPSHOTS=1`.",
+  "`assertSnapshot` with argument 2 `snapshotFile` not a string or `URL` instance.",
+  async () => {
+    await rejects(
+      assertSnapshot("a", true),
+      new TypeError(
+        "Argument 2 `snapshotFile` must be a string or `URL` instance."
+      )
+    );
+  }
+);
+
+tests.add(
+  "`assertSnapshot` with argument 3 `assertion` not a function.",
+  async () => {
+    await rejects(
+      assertSnapshot("a", "snapshot.txt", true),
+      new TypeError("Argument 3 `assertion` must be a function.")
+    );
+  }
+);
+
+tests.add(
+  "`assertSnapshot` with snapshot file URL, invalid scheme.",
+  async () => {
+    await rejects(assertSnapshot("a", new URL("http://localhost")), TypeError);
+  }
+);
+
+tests.add(
+  "`assertSnapshot` with snapshot file URL, assertion default, snapshot present.",
   async () => {
     await disposableDirectory(async (tempDirPath) => {
-      const snapshotPath = join(tempDirPath, "snapshot.txt");
+      const snapshotFileUrl = pathToFileURL(join(tempDirPath, "snapshot.txt"));
+
+      await fs.promises.writeFile(snapshotFileUrl, "a");
+
+      await doesNotReject(assertSnapshot("a", snapshotFileUrl));
+      await rejects(assertSnapshot("b", snapshotFileUrl), {
+        code: "ERR_ASSERTION",
+      });
+    });
+  }
+);
+
+tests.add(
+  "`assertSnapshot` with snapshot file path, assertion default, snapshot file missing, `SAVE_SNAPSHOTS` env var missing.",
+  async () => {
+    await disposableDirectory(async (tempDirPath) => {
+      const snapshotFilePath = join(tempDirPath, "snapshot.txt");
+
+      await rejects(
+        assertSnapshot("a", snapshotFilePath),
+        new Error(
+          `Use the environment variable \`SAVE_SNAPSHOTS=1\` to create missing snapshot \`${snapshotFilePath}\`.`
+        )
+      );
+    });
+  }
+);
+
+tests.add(
+  "`assertSnapshot` with snapshot file path, assertion default, snapshot file missing, `SAVE_SNAPSHOTS` env var present.",
+  async () => {
+    await disposableDirectory(async (tempDirPath) => {
+      const snapshotFilePath = join(tempDirPath, "snapshot.txt");
       const testPath = join(tempDirPath, "test.mjs");
       const snapshotAssertionPath = fileURLToPath(
         new URL("./assertSnapshot.mjs", import.meta.url)
       );
 
       await Promise.all([
-        fs.promises.writeFile(snapshotPath, "a"),
+        fs.promises.writeFile(snapshotFilePath, "a"),
         fs.promises.writeFile(
           testPath,
           `import assertSnapshot from "${snapshotAssertionPath}";
 
-assertSnapshot("b", "${snapshotPath}");
+assertSnapshot("b", "${snapshotFilePath}");
 `
         ),
       ]);
@@ -97,7 +110,54 @@ assertSnapshot("b", "${snapshotPath}");
         },
       });
 
-      strictEqual(await fs.promises.readFile(snapshotPath, "utf8"), "b");
+      strictEqual(await fs.promises.readFile(snapshotFilePath, "utf8"), "b");
+    });
+  }
+);
+
+tests.add(
+  "`assertSnapshot` with snapshot file path, assertion default, snapshot present.",
+  async () => {
+    await disposableDirectory(async (tempDirPath) => {
+      const snapshotFilePath = join(tempDirPath, "snapshot.txt");
+
+      await fs.promises.writeFile(snapshotFilePath, "a");
+
+      await doesNotReject(assertSnapshot("a", snapshotFilePath));
+      await rejects(assertSnapshot("b", snapshotFilePath), {
+        code: "ERR_ASSERTION",
+      });
+    });
+  }
+);
+
+tests.add(
+  "`assertSnapshot` with snapshot file path, assertion custom, snapshot present.",
+  async () => {
+    await disposableDirectory(async (tempDirPath) => {
+      const snapshotFilePath = join(tempDirPath, "snapshot.json");
+
+      await fs.promises.writeFile(snapshotFilePath, "a");
+
+      const errorMessage = "Different values.";
+
+      /**
+       * Asserts one value is another.
+       * @kind function
+       * @name assertIs
+       * @param {*} actual Actual value.
+       * @param {*} expected Expected value.
+       * @ignore
+       */
+      function assertIs(actual, expected) {
+        if (!Object.is(actual, expected)) throw new Error(errorMessage);
+      }
+
+      await doesNotReject(assertSnapshot("a", snapshotFilePath, assertIs));
+      await rejects(
+        assertSnapshot("b", snapshotFilePath, assertIs),
+        new Error(errorMessage)
+      );
     });
   }
 );

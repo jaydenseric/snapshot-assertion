@@ -21,7 +21,7 @@ Asserts a string matches a snapshot saved in a file. A truthy `SAVE_SNAPSHOTS` e
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
 | `actualValue` | string | Actual value to assert matches the snapshot expected value. |
-| `snapshotFilePath` | string | Snapshot file path. Be sure any directories in the path already exist. It’s a good idea to use a filename extension suited to the data, e.g. `.json`, `.yml`, `.xml`, `.html`, `.md` or `.txt`. |
+| `snapshotFile` | string \| URL | Snapshot file path or URL. Be sure any directories in the path already exist. It’s a good idea to use a filename extension suited to the data, e.g. `.json`, `.yml`, `.xml`, `.html`, `.md`, or `.txt`. |
 | `assertion` | Function? | Assertion that receives actual and expected values and throws an error if they don’t match. Defaults to the Node.js [`strictEqual`](https://nodejs.org/api/assert.html#assert_assert_strictequal_actual_expected_message) assertion. |
 
 **Returns:** Promise\<void> — Resolves once the snapshot has been saved or asserted.

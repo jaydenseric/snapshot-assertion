@@ -9,6 +9,8 @@
 - Removed `./package` from the package `exports` field; the full `package.json` filename must be used in a `require` path.
 - Renamed `index.mjs` to `assertSnapshot.mjs` and added it to the package `exports` field.
 - Renamed the function `snapshot` to `assertSnapshot`.
+- Renamed the function `assertSnapshot` argument 2 `snapshotFilePath` to `snapshotFile`, and allow it to also be a file `URL` instance.
+- Added runtime argument type checks.
 
 ### Patch
 
@@ -16,6 +18,7 @@
 - Added a package `docs-check` script that checks the readme API docs are up to date with the source JSDoc.
 - Also run GitHub Actions CI with Node.js v17, and drop v15.
 - Configured Prettier option `singleQuote` to the default, `false`.
+- Improved tests.
 - Documentation tweaks.
 
 ## 3.0.0
