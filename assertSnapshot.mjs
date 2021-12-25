@@ -6,32 +6,36 @@ import fs from "fs";
  * `SAVE_SNAPSHOTS` environment variable can be used to save rather than assert
  * snapshots.
  * @kind function
- * @name snapshot
+ * @name assertSnapshot
  * @param {string} actualValue Actual value to assert matches the snapshot expected value.
  * @param {string} snapshotFilePath Snapshot file path. Be sure any directories in the path already exist. It’s a good idea to use a filename extension suited to the data, e.g. `.json`, `.yml`, `.xml`, `.html`, `.md` or `.txt`.
  * @param {Function} [assertion] Assertion that receives actual and expected values and throws an error if they don’t match. Defaults to the Node.js [`strictEqual`](https://nodejs.org/api/assert.html#assert_assert_strictequal_actual_expected_message) assertion.
  * @returns {Promise<void>} Resolves once the snapshot has been saved or asserted.
- * @example <caption>How to `import`.</caption>
+ * @example <caption>Ways to import.</caption>
  * ```js
- * import snapshot from "snapshot-assertion";
+ * import assertSnapshot from "snapshot-assertion";
+ * ```
+ *
+ * ```js
+ * import assertSnapshot from "snapshot-assertion/assertSnapshot.mjs";
  * ```
  * @example <caption>A snapshot assertion in a [`test-director`](https://npm.im/test-director) test.</caption>
  * ```js
  * import fetch from "node-fetch";
- * import snapshot from "snapshot-assertion";
+ * import assertSnapshot from "snapshot-assertion";
  * import TestDirector from "test-director";
  *
  * const tests = new TestDirector();
  *
  * tests.add("Get a todo.", async () => {
  *   const response = await fetch("https://jsonplaceholder.typicode.com/todos/1");
- *   await snapshot(await response.json(), "snapshots/todo.json");
+ *   await assertSnapshot(await response.json(), "snapshots/todo.json");
  * });
  *
  * tests.run();
  * ```
  */
-export default async function snapshot(
+export default async function assertSnapshot(
   actualValue,
   snapshotFilePath,
   assertion = strictEqual

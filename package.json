@@ -22,12 +22,13 @@
     "mjs"
   ],
   "files": [
-    "index.mjs"
+    "assertSnapshot.mjs"
   ],
   "sideEffects": false,
-  "main": "./index.mjs",
+  "main": "./assertSnapshot.mjs",
   "exports": {
-    ".": "./index.mjs",
+    ".": "./assertSnapshot.mjs",
+    "./assertSnapshot.mjs": "./assertSnapshot.mjs",
     "./package.json": "./package.json"
   },
   "engines": {

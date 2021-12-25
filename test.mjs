@@ -6,25 +6,25 @@ import { fileURLToPath } from "url";
 import { promisify } from "util";
 import disposableDirectory from "disposable-directory";
 import TestDirector from "test-director";
-import snapshot from "./index.mjs";
+import assertSnapshot from "./assertSnapshot.mjs";
 
 const execFilePromise = promisify(execFile);
 const tests = new TestDirector();
 
-tests.add("`snapshot` with default assertion.", async () => {
+tests.add("`assertSnapshot` with default assertion.", async () => {
   await disposableDirectory(async (tempDirPath) => {
     const snapshotPath = join(tempDirPath, "snapshot.txt");
 
     await fs.promises.writeFile(snapshotPath, "a");
 
-    await doesNotReject(() => snapshot("a", snapshotPath));
-    await rejects(() => snapshot("b", snapshotPath), {
+    await doesNotReject(() => assertSnapshot("a", snapshotPath));
+    await rejects(() => assertSnapshot("b", snapshotPath), {
       code: "ERR_ASSERTION",
     });
   });
 });
 
-tests.add("`snapshot` with custom assertion.", async () => {
+tests.add("`assertSnapshot` with custom assertion.", async () => {
   await disposableDirectory(async (tempDirPath) => {
     const snapshotPath = join(tempDirPath, "snapshot.json");
 
@@ -44,23 +44,25 @@ tests.add("`snapshot` with custom assertion.", async () => {
       if (!Object.is(actual, expected)) throw new Error(errorMessage);
     }
 
-    await doesNotReject(() => snapshot("a", snapshotPath, assertIs));
-    await rejects(() => snapshot("b", snapshotPath, assertIs), {
+    await doesNotReject(() => assertSnapshot("a", snapshotPath, assertIs));
+    await rejects(() => assertSnapshot("b", snapshotPath, assertIs), {
       name: "Error",
       message: errorMessage,
     });
   });
 });
 
-tests.add("`snapshot` with invalid snapshot file path.", async () => {
-  await rejects(() => snapshot("a", false), { code: "ERR_INVALID_ARG_TYPE" });
+tests.add("`assertSnapshot` with invalid snapshot file path.", async () => {
+  await rejects(() => assertSnapshot("a", false), {
+    code: "ERR_INVALID_ARG_TYPE",
+  });
 });
 
-tests.add("`snapshot` with missing snapshot file.", async () => {
+tests.add("`assertSnapshot` with missing snapshot file.", async () => {
   await disposableDirectory(async (tempDirPath) => {
     const snapshotPath = join(tempDirPath, "snapshot.txt");
 
-    await rejects(() => snapshot("a", snapshotPath), {
+    await rejects(() => assertSnapshot("a", snapshotPath), {
       name: "Error",
       message: `Use the environment variable \`SAVE_SNAPSHOTS=1\` to create missing snapshot \`${snapshotPath}\`.`,
     });
@@ -68,22 +70,22 @@ tests.add("`snapshot` with missing snapshot file.", async () => {
 });
 
 tests.add(
-  "`snapshot` with environment variable `SAVE_SNAPSHOTS=1`.",
+  "`assertSnapshot` with environment variable `SAVE_SNAPSHOTS=1`.",
   async () => {
     await disposableDirectory(async (tempDirPath) => {
       const snapshotPath = join(tempDirPath, "snapshot.txt");
       const testPath = join(tempDirPath, "test.mjs");
       const snapshotAssertionPath = fileURLToPath(
-        new URL("./index.mjs", import.meta.url)
+        new URL("./assertSnapshot.mjs", import.meta.url)
       );
 
       await Promise.all([
         fs.promises.writeFile(snapshotPath, "a"),
         fs.promises.writeFile(
           testPath,
-          `import snapshot from "${snapshotAssertionPath}";
+          `import assertSnapshot from "${snapshotAssertionPath}";
 
-snapshot("b", "${snapshotPath}");
+assertSnapshot("b", "${snapshotPath}");
 `
         ),
       ]);

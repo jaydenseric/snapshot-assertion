@@ -14,7 +14,7 @@ npm install snapshot-assertion --save-dev
 
 ## API
 
-### function snapshot
+### function assertSnapshot
 
 Asserts a string matches a snapshot saved in a file. A truthy `SAVE_SNAPSHOTS` environment variable can be used to save rather than assert snapshots.
 
@@ -28,17 +28,21 @@ Asserts a string matches a snapshot saved in a file. A truthy `SAVE_SNAPSHOTS` e
 
 #### Examples
 
-_How to `import`._
+_Ways to import._
 
 > ```js
-> import snapshot from "snapshot-assertion";
+> import assertSnapshot from "snapshot-assertion";
+> ```
+>
+> ```js
+> import assertSnapshot from "snapshot-assertion/assertSnapshot.mjs";
 > ```
 
 _A snapshot assertion in a [`test-director`](https://npm.im/test-director) test._
 
 > ```js
 > import fetch from "node-fetch";
-> import snapshot from "snapshot-assertion";
+> import assertSnapshot from "snapshot-assertion";
 > import TestDirector from "test-director";
 >
 > const tests = new TestDirector();
@@ -47,7 +51,7 @@ _A snapshot assertion in a [`test-director`](https://npm.im/test-director) test.
 >   const response = await fetch(
 >     "https://jsonplaceholder.typicode.com/todos/1"
 >   );
->   await snapshot(await response.json(), "snapshots/todo.json");
+>   await assertSnapshot(await response.json(), "snapshots/todo.json");
 > });
 >
 > tests.run();
