@@ -14,10 +14,6 @@ npm install snapshot-assertion --save-dev
 
 ## API
 
-### Table of contents
-
-- [function snapshot](#function-snapshot)
-
 ### function snapshot
 
 Asserts a string matches a snapshot saved in a file. A truthy `SAVE_SNAPSHOTS` environment variable can be used to save rather than assert snapshots.
