@@ -31,23 +31,23 @@ Asserts a string matches a snapshot saved in a file. A truthy `SAVE_SNAPSHOTS` e
 _How to `import`._
 
 > ```js
-> import snapshot from 'snapshot-assertion';
+> import snapshot from "snapshot-assertion";
 > ```
 
 _A snapshot assertion in a [`test-director`](https://npm.im/test-director) test._
 
 > ```js
-> import fetch from 'node-fetch';
-> import snapshot from 'snapshot-assertion';
-> import TestDirector from 'test-director';
+> import fetch from "node-fetch";
+> import snapshot from "snapshot-assertion";
+> import TestDirector from "test-director";
 >
 > const tests = new TestDirector();
 >
-> tests.add('Get a todo.', async () => {
+> tests.add("Get a todo.", async () => {
 >   const response = await fetch(
->     'https://jsonplaceholder.typicode.com/todos/1'
+>     "https://jsonplaceholder.typicode.com/todos/1"
 >   );
->   await snapshot(await response.json(), 'snapshots/todo.json');
+>   await snapshot(await response.json(), "snapshots/todo.json");
 > });
 >
 > tests.run();
