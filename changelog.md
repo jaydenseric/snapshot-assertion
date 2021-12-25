@@ -14,6 +14,7 @@
 - Added a package `docs-check` script that checks the readme API docs are up to date with the source JSDoc.
 - Also run GitHub Actions CI with Node.js v17, and drop v15.
 - Configured Prettier option `singleQuote` to the default, `false`.
+- Documentation tweaks.
 
 ## 3.0.0
 

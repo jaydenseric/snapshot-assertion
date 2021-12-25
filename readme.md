@@ -4,7 +4,7 @@
 
 Asserts a string matches a snapshot saved in a file. An environment variable can be used to save rather than assert snapshots.
 
-## Setup
+## Installation
 
 To install with [npm](https://npmjs.com/get-npm), run:
 
