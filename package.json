@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "coverage-node": "^5.0.1",
-    "disposable-directory": "^4.0.0",
+    "disposable-directory": "^5.0.0",
     "eslint": "^8.5.0",
     "eslint-config-env": "^23.0.1",
     "eslint-config-prettier": "^8.3.0",
