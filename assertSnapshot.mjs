@@ -1,3 +1,5 @@
+// @ts-check
+
 import { strictEqual } from "assert";
 import fs from "fs";
 
@@ -7,10 +9,18 @@ import fs from "fs";
  * snapshots.
  * @kind function
  * @name assertSnapshot
- * @param {string} actualValue Actual value to assert matches the snapshot expected value.
- * @param {string | URL} snapshotFile Snapshot file path or URL. Be sure any directories in the path already exist. It’s a good idea to use a filename extension suited to the data, e.g. `.json`, `.yml`, `.xml`, `.html`, `.md`, or `.txt`.
- * @param {Function} [assertion] Assertion that receives actual and expected values and throws an error if they don’t match. Defaults to the Node.js [`strictEqual`](https://nodejs.org/api/assert.html#assert_assert_strictequal_actual_expected_message) assertion.
- * @returns {Promise<void>} Resolves once the snapshot has been saved or asserted.
+ * @param {string} actualValue Actual value to assert matches the snapshot
+ *   expected value.
+ * @param {string | URL} snapshotFile Snapshot file path or URL. Be sure any
+ *   directories in the path already exist. It’s a good idea to use a filename
+ *   extension suited to the data, e.g. `.json`, `.yml`, `.xml`, `.html`, `.md`,
+ *   or `.txt`.
+ * @param {Function} [assertion] Assertion that receives actual and expected
+ *   values and throws an error if they don’t match. Defaults to the Node.js
+ *   [`strictEqual`](https://nodejs.org/api/assert.html#assert_assert_strictequal_actual_expected_message)
+ *   assertion.
+ * @returns {Promise<void>} Resolves once the snapshot has been saved or
+ *   asserted.
  * @example <caption>Ways to import.</caption>
  * ```js
  * import assertSnapshot from "snapshot-assertion";
@@ -54,10 +64,16 @@ export default async function assertSnapshot(
   if (process.env.SAVE_SNAPSHOTS)
     await fs.promises.writeFile(snapshotFile, actualValue);
   else {
+    let expectedValue;
+
     try {
-      var expectedValue = await fs.promises.readFile(snapshotFile, "utf8");
+      expectedValue = await fs.promises.readFile(snapshotFile, "utf8");
     } catch (error) {
-      throw typeof error === "object" && error && error.code === "ENOENT"
+      throw typeof error === "object" &&
+        // Not `null`.
+        error &&
+        // @ts-ignore It’s ok to check this property.
+        error.code === "ENOENT"
         ? new Error(
             `Use the environment variable \`SAVE_SNAPSHOTS=1\` to create missing snapshot \`${snapshotFile}\`.`
           )

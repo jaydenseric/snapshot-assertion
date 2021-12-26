@@ -1,3 +1,5 @@
+// @ts-check
+
 import { doesNotReject, rejects, strictEqual } from "assert";
 import { execFile } from "child_process";
 import fs from "fs";
@@ -15,7 +17,11 @@ tests.add(
   "`assertSnapshot` with argument 1 `actualValue` not a string.",
   async () => {
     await rejects(
-      assertSnapshot(true),
+      assertSnapshot(
+        // @ts-ignore Testing invalid.
+        true,
+        "snapshot.txt"
+      ),
       new TypeError("Argument 1 `actualValue` must be a string.")
     );
   }
@@ -25,7 +31,11 @@ tests.add(
   "`assertSnapshot` with argument 2 `snapshotFile` not a string or `URL` instance.",
   async () => {
     await rejects(
-      assertSnapshot("a", true),
+      assertSnapshot(
+        "a",
+        // @ts-ignore Testing invalid.
+        true
+      ),
       new TypeError(
         "Argument 2 `snapshotFile` must be a string or `URL` instance."
       )
@@ -37,7 +47,12 @@ tests.add(
   "`assertSnapshot` with argument 3 `assertion` not a function.",
   async () => {
     await rejects(
-      assertSnapshot("a", "snapshot.txt", true),
+      assertSnapshot(
+        "a",
+        "snapshot.txt",
+        // @ts-ignore Testing invalid.
+        true
+      ),
       new TypeError("Argument 3 `assertion` must be a function.")
     );
   }
@@ -143,10 +158,8 @@ tests.add(
 
       /**
        * Asserts one value is another.
-       * @kind function
-       * @name assertIs
-       * @param {*} actual Actual value.
-       * @param {*} expected Expected value.
+       * @param {unknown} actual Actual value.
+       * @param {unknown} expected Expected value.
        * @ignore
        */
       function assertIs(actual, expected) {

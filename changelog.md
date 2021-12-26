@@ -11,11 +11,13 @@
 - Renamed the function `snapshot` to `assertSnapshot`.
 - Renamed the function `assertSnapshot` argument 2 `snapshotFilePath` to `snapshotFile`, and allow it to also be a file `URL` instance.
 - Added runtime argument type checks.
+- Implemented TypeScript types via JSDoc comments.
 
 ### Patch
 
 - Simplified package scripts.
 - Added a package `docs-check` script that checks the readme API docs are up to date with the source JSDoc.
+- Check TypeScript types via a new package `types` script.
 - Also run GitHub Actions CI with Node.js v17, and drop v15.
 - Configured Prettier option `singleQuote` to the default, `false`.
 - Improved tests.
