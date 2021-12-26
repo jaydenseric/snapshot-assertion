@@ -5,6 +5,7 @@
 ### Patch
 
 - Moved [`@types/node`](https://npm.im/@types/node) from package `devDependencies` to `dependencies`, using `*` for the version.
+- Updated dev dependencies.
 
 ## 4.0.0
 
