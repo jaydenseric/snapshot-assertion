@@ -7,8 +7,6 @@ import fs from "fs";
  * Asserts a string matches a snapshot saved in a file. A truthy
  * `SAVE_SNAPSHOTS` environment variable can be used to save rather than assert
  * snapshots.
- * @kind function
- * @name assertSnapshot
  * @param {string} actualValue Actual value to assert matches the snapshot
  *   expected value.
  * @param {string | URL} snapshotFile Snapshot file path or URL. Be sure any
@@ -21,15 +19,9 @@ import fs from "fs";
  *   assertion.
  * @returns {Promise<void>} Resolves once the snapshot has been saved or
  *   asserted.
- * @example <caption>Ways to import.</caption>
- * ```js
- * import assertSnapshot from "snapshot-assertion";
- * ```
+ * @example
+ * A snapshot assertion in a [`test-director`](https://npm.im/test-director) test:
  *
- * ```js
- * import assertSnapshot from "snapshot-assertion/assertSnapshot.mjs";
- * ```
- * @example <caption>A snapshot assertion in a [`test-director`](https://npm.im/test-director) test.</caption>
  * ```js
  * import fetch from "node-fetch";
  * import assertSnapshot from "snapshot-assertion";

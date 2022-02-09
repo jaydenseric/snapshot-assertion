@@ -161,7 +161,6 @@ tests.add(
        * Asserts one value is another.
        * @param {unknown} actual Actual value.
        * @param {unknown} expected Expected value.
-       * @ignore
        */
       function assertIs(actual, expected) {
         if (!Object.is(actual, expected)) throw new Error(errorMessage);

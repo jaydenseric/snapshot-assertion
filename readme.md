@@ -12,47 +12,33 @@ To install with [npm](https://npmjs.com/get-npm), run:
 npm install snapshot-assertion --save-dev
 ```
 
-## API
+## Examples
 
-### function assertSnapshot
+A snapshot assertion in a [`test-director`](https://npm.im/test-director) test:
 
-Asserts a string matches a snapshot saved in a file. A truthy `SAVE_SNAPSHOTS` environment variable can be used to save rather than assert snapshots.
+```js
+import fetch from "node-fetch";
+import assertSnapshot from "snapshot-assertion";
+import TestDirector from "test-director";
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| `actualValue` | string | Actual value to assert matches the snapshot&#xA;expected value. |
-| `snapshotFile` | string \| URL | Snapshot file path or URL. Be sure any&#xA;directories in the path already exist. It’s a good idea to use a filename&#xA;extension suited to the data, e.g. `.json`, `.yml`, `.xml`, `.html`, `.md`,&#xA;or `.txt`. |
-| `assertion` | Function? | Assertion that receives actual and expected&#xA;values and throws an error if they don’t match. Defaults to the Node.js&#xA;[`strictEqual`](https://nodejs.org/api/assert.html#assert_assert_strictequal_actual_expected_message)&#xA;assertion. |
+const tests = new TestDirector();
 
-**Returns:** Promise\<void> — Resolves once the snapshot has been saved or asserted.
+tests.add("Get a todo.", async () => {
+  const response = await fetch("https://jsonplaceholder.typicode.com/todos/1");
+  await assertSnapshot(await response.json(), "snapshots/todo.json");
+});
 
-#### Examples
+tests.run();
+```
 
-_Ways to import._
+Using the `SAVE_SNAPSHOTS` environment variable to save snapshots when running a package script:
 
-> ```js
-> import assertSnapshot from "snapshot-assertion";
-> ```
->
-> ```js
-> import assertSnapshot from "snapshot-assertion/assertSnapshot.mjs";
-> ```
+```sh
+SAVE_SNAPSHOTS=1 npm run test
+```
 
-_A snapshot assertion in a [`test-director`](https://npm.im/test-director) test._
+## Exports
 
-> ```js
-> import fetch from "node-fetch";
-> import assertSnapshot from "snapshot-assertion";
-> import TestDirector from "test-director";
->
-> const tests = new TestDirector();
->
-> tests.add("Get a todo.", async () => {
->   const response = await fetch(
->     "https://jsonplaceholder.typicode.com/todos/1"
->   );
->   await assertSnapshot(await response.json(), "snapshots/todo.json");
-> });
->
-> tests.run();
-> ```
+These ECMAScript modules are published to [npm](https://npmjs.com) and exported via the [`package.json`](./package.json) `exports` field:
+
+- [`assertSnapshot.mjs`](./assertSnapshot.mjs)
