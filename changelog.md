@@ -1,5 +1,11 @@
 # snapshot-assertion changelog
 
+## Next
+
+### Patch
+
+- Updated `jsconfig.json` to disable TypeScript automatic type acquisition for the project.
+
 ## 4.0.1
 
 ### Patch
