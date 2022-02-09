@@ -5,6 +5,7 @@
 ### Patch
 
 - Updated `jsconfig.json` to disable TypeScript automatic type acquisition for the project.
+- Added a `license.md` MIT License file.
 
 ## 4.0.1
 
