@@ -2,12 +2,13 @@
 
 import { doesNotReject, rejects, strictEqual } from "assert";
 import { execFile } from "child_process";
+import disposableDirectory from "disposable-directory";
 import fs from "fs";
 import { join } from "path";
+import TestDirector from "test-director";
 import { fileURLToPath, pathToFileURL } from "url";
 import { promisify } from "util";
-import disposableDirectory from "disposable-directory";
-import TestDirector from "test-director";
+
 import assertSnapshot from "./assertSnapshot.mjs";
 
 const execFilePromise = promisify(execFile);
