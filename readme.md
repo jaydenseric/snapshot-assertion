@@ -10,6 +10,8 @@ To install [`snapshot-assertion`](https://npm.im/snapshot-assertion) with [npm](
 npm install snapshot-assertion --save-dev
 ```
 
+Then, import and use the function [`assertSnapshot`](./assertSnapshot.mjs).
+
 ## Examples
 
 A snapshot assertion in a [`test-director`](https://npm.im/test-director) test:
