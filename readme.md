@@ -1,12 +1,10 @@
 # snapshot-assertion
 
-[![npm version](https://badgen.net/npm/v/snapshot-assertion)](https://npm.im/snapshot-assertion) [![CI status](https://github.com/jaydenseric/snapshot-assertion/workflows/CI/badge.svg)](https://github.com/jaydenseric/snapshot-assertion/actions)
-
 Asserts a string matches a snapshot saved in a file. An environment variable can be used to save rather than assert snapshots.
 
 ## Installation
 
-To install with [npm](https://npmjs.com/get-npm), run:
+To install [`snapshot-assertion`](https://npm.im/snapshot-assertion) with [npm](https://npmjs.com/get-npm), run:
 
 ```sh
 npm install snapshot-assertion --save-dev
@@ -37,8 +35,20 @@ Using the `SAVE_SNAPSHOTS` environment variable to save snapshots when running a
 SAVE_SNAPSHOTS=1 npm run test
 ```
 
+## Requirements
+
+Supported runtime environments:
+
+- [Node.js](https://nodejs.org) versions `^14.17.0 || ^16.0.0 || >= 18.0.0`.
+
+Projects must configure [TypeScript](https://typescriptlang.org) to use types from the ECMAScript modules that have a `// @ts-check` comment:
+
+- [`compilerOptions.allowJs`](https://typescriptlang.org/tsconfig#allowJs) should be `true`.
+- [`compilerOptions.maxNodeModuleJsDepth`](https://typescriptlang.org/tsconfig#maxNodeModuleJsDepth) should be reasonably large, e.g. `10`.
+- [`compilerOptions.module`](https://typescriptlang.org/tsconfig#module) should be `"node16"` or `"nodenext"`.
+
 ## Exports
 
-These ECMAScript modules are published to [npm](https://npmjs.com) and exported via the [`package.json`](./package.json) `exports` field:
+The [npm](https://npmjs.com) package [`snapshot-assertion`](https://npm.im/snapshot-assertion) features [optimal JavaScript module design](https://jaydenseric.com/blog/optimal-javascript-module-design). These ECMAScript modules are exported via the [`package.json`](./package.json) field [`exports`](https://nodejs.org/api/packages.html#exports):
 
 - [`assertSnapshot.mjs`](./assertSnapshot.mjs)
