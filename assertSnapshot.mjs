@@ -20,7 +20,8 @@ import { readFile, writeFile } from "node:fs/promises";
  * @returns {Promise<void>} Resolves once the snapshot has been saved or
  *   asserted.
  * @example
- * A snapshot assertion in a [`test-director`](https://npm.im/test-director) test:
+ * A snapshot assertion in a [`test-director`](https://npm.im/test-director)
+ * test:
  *
  * ```js
  * import fetch from "node-fetch";
