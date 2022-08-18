@@ -8,6 +8,7 @@
 - Updated dev dependencies, some of which require newer Node.js versions than previously supported.
 - Removed the package `main` field.
 - Use the `node:` URL scheme for Node.js builtin module imports.
+- Migrated from the Node.js builtin module `fs` to `node:fs/promises`.
 
 ### Patch
 

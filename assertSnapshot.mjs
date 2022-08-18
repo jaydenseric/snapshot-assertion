@@ -1,7 +1,7 @@
 // @ts-check
 
 import { strictEqual } from "node:assert";
-import fs from "node:fs";
+import { readFile, writeFile } from "node:fs/promises";
 
 /**
  * Asserts a string matches a snapshot saved in a file. A truthy
@@ -53,13 +53,12 @@ export default async function assertSnapshot(
   if (typeof assertion !== "function")
     throw new TypeError("Argument 3 `assertion` must be a function.");
 
-  if (process.env.SAVE_SNAPSHOTS)
-    await fs.promises.writeFile(snapshotFile, actualValue);
+  if (process.env.SAVE_SNAPSHOTS) await writeFile(snapshotFile, actualValue);
   else {
     let expectedValue;
 
     try {
-      expectedValue = await fs.promises.readFile(snapshotFile, "utf8");
+      expectedValue = await readFile(snapshotFile, "utf8");
     } catch (error) {
       throw typeof error === "object" &&
         // Not `null`.

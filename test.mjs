@@ -3,7 +3,7 @@
 import disposableDirectory from "disposable-directory";
 import { doesNotReject, rejects, strictEqual } from "node:assert";
 import { execFile } from "node:child_process";
-import fs from "node:fs";
+import { readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { promisify } from "node:util";
@@ -72,7 +72,7 @@ tests.add(
     await disposableDirectory(async (tempDirPath) => {
       const snapshotFileUrl = pathToFileURL(join(tempDirPath, "snapshot.txt"));
 
-      await fs.promises.writeFile(snapshotFileUrl, "a");
+      await writeFile(snapshotFileUrl, "a");
 
       await doesNotReject(assertSnapshot("a", snapshotFileUrl));
       await rejects(assertSnapshot("b", snapshotFileUrl), {
@@ -109,8 +109,8 @@ tests.add(
       );
 
       await Promise.all([
-        fs.promises.writeFile(snapshotFilePath, "a"),
-        fs.promises.writeFile(
+        writeFile(snapshotFilePath, "a"),
+        writeFile(
           testPath,
           `import assertSnapshot from "${snapshotAssertionPath}";
 
@@ -126,7 +126,7 @@ assertSnapshot("b", "${snapshotFilePath}");
         },
       });
 
-      strictEqual(await fs.promises.readFile(snapshotFilePath, "utf8"), "b");
+      strictEqual(await readFile(snapshotFilePath, "utf8"), "b");
     });
   }
 );
@@ -137,7 +137,7 @@ tests.add(
     await disposableDirectory(async (tempDirPath) => {
       const snapshotFilePath = join(tempDirPath, "snapshot.txt");
 
-      await fs.promises.writeFile(snapshotFilePath, "a");
+      await writeFile(snapshotFilePath, "a");
 
       await doesNotReject(assertSnapshot("a", snapshotFilePath));
       await rejects(assertSnapshot("b", snapshotFilePath), {
@@ -153,7 +153,7 @@ tests.add(
     await disposableDirectory(async (tempDirPath) => {
       const snapshotFilePath = join(tempDirPath, "snapshot.json");
 
-      await fs.promises.writeFile(snapshotFilePath, "a");
+      await writeFile(snapshotFilePath, "a");
 
       const errorMessage = "Different values.";
 
