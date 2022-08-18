@@ -25,7 +25,6 @@
     "assertSnapshot.mjs"
   ],
   "sideEffects": false,
-  "main": "./assertSnapshot.mjs",
   "exports": {
     ".": "./assertSnapshot.mjs",
     "./assertSnapshot.mjs": "./assertSnapshot.mjs",
