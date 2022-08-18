@@ -1,7 +1,7 @@
 // @ts-check
 
-import { strictEqual } from "assert";
-import fs from "fs";
+import { strictEqual } from "node:assert";
+import fs from "node:fs";
 
 /**
  * Asserts a string matches a snapshot saved in a file. A truthy
