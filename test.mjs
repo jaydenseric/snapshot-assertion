@@ -1,12 +1,13 @@
 // @ts-check
 
-import disposableDirectory from "disposable-directory";
 import { doesNotReject, rejects, strictEqual } from "node:assert";
 import { execFile } from "node:child_process";
 import { readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { promisify } from "node:util";
+
+import disposableDirectory from "disposable-directory";
 import TestDirector from "test-director";
 
 import assertSnapshot from "./assertSnapshot.mjs";
